@@ -2,7 +2,7 @@
 echo "this script is run as root and unix plugin of mysql" 
 echo "give database name:"
 read d
-mysqldump  -d $d > "$d"_blank.sql
+mysqldump  -d $d > "$d"_blank.sql 
 
 tnames='
 master_child

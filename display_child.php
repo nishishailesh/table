@@ -22,7 +22,7 @@ Array
 )
 */
 $msql='select id from `'.$_POST['mname'].'` 
-        where id=\''.$_POST['fvalue'].'\' order by id desc';
+        where `'.$_POST['master_field'].'`  =\''.$_POST['fvalue'].'\' order by id desc';
 
 echo '<h2 class="text-success">'.$_POST['mname'].' with  id ='.$_POST['fvalue'].'</h2>';
 //select_sql($link,$_POST['mname'],$msql,array(),$edit='no',$delete='no');

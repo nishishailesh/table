@@ -1,8 +1,8 @@
--- MySQL dump 10.17  Distrib 10.3.22-MariaDB, for debian-linux-gnu (x86_64)
+-- MariaDB dump 10.19  Distrib 10.11.3-MariaDB, for debian-linux-gnu (x86_64)
 --
 -- Host: localhost    Database: cl_table
 -- ------------------------------------------------------
--- Server version	10.3.22-MariaDB-0+deb10u1
+-- Server version	10.11.3-MariaDB-1
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
@@ -29,7 +29,7 @@ CREATE TABLE `master_child` (
   `child` varchar(50) DEFAULT NULL,
   `child_key` varchar(50) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -38,7 +38,10 @@ CREATE TABLE `master_child` (
 
 LOCK TABLES `master_child` WRITE;
 /*!40000 ALTER TABLE `master_child` DISABLE KEYS */;
-INSERT INTO `master_child` VALUES (3,'reagent_name','id','reagent_receipt','reagent_name_id'),(4,'reagent_receipt','id','reagent_use','reagent_receipt_id');
+INSERT INTO `master_child` VALUES
+(3,'reagent_name','id','reagent_receipt','reagent_name_id'),
+(4,'reagent_receipt','id','reagent_use','reagent_receipt_id'),
+(5,'Quality_manual_section','clause','NABL_Records','doc_type');
 /*!40000 ALTER TABLE `master_child` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -56,7 +59,7 @@ CREATE TABLE `record_tables` (
   `recording_time` datetime DEFAULT NULL ON UPDATE current_timestamp(),
   `recorded_by` varchar(100) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -65,7 +68,13 @@ CREATE TABLE `record_tables` (
 
 LOCK TABLES `record_tables` WRITE;
 /*!40000 ALTER TABLE `record_tables` DISABLE KEYS */;
-INSERT INTO `record_tables` VALUES (1,'reagent_name',0,'2022-03-19 01:32:20',''),(2,'reagent_receipt',0,'2022-03-19 00:45:46','1'),(3,'reagent_use',0,NULL,''),(4,'calibration',1,NULL,NULL),(5,'Miscellaneous',1,NULL,NULL),(6,'NABL_Records',1,NULL,NULL);
+INSERT INTO `record_tables` VALUES
+(1,'reagent_name',0,'2022-03-19 01:32:20',''),
+(2,'reagent_receipt',0,'2022-03-19 00:45:46','1'),
+(3,'reagent_use',0,NULL,''),
+(6,'record_tables',5,NULL,NULL),
+(7,'Quality_manual_section',3,'2023-10-31 22:35:22','1'),
+(8,'NABL_Records',3,'2023-10-31 22:35:46','1');
 /*!40000 ALTER TABLE `record_tables` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -83,9 +92,10 @@ CREATE TABLE `table_field_specification` (
   `ftype` varchar(50) DEFAULT NULL,
   `table` varchar(50) DEFAULT NULL,
   `field` varchar(50) DEFAULT NULL,
+  `field_description` varchar(50) DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `tname_fname` (`tname`,`fname`)
-) ENGINE=InnoDB AUTO_INCREMENT=56 DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB AUTO_INCREMENT=52 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -94,7 +104,57 @@ CREATE TABLE `table_field_specification` (
 
 LOCK TABLES `table_field_specification` WRITE;
 /*!40000 ALTER TABLE `table_field_specification` DISABLE KEYS */;
-INSERT INTO `table_field_specification` VALUES (1,'equipment_record','equipment','table','equipment','equipment'),(2,'equipment_record','equipment_record_type','table','equipment_record_type','equipment_record_type'),(3,'equipment_record','date','date','',''),(4,'equipment_record','description','textarea','',''),(5,'calibration','date','date','',''),(6,'calibration','cal_equipment','table','cal_equipment','cal_equipment'),(7,'calibration','remarks','textarea','',''),(8,'calibration','correlation','textarea','',''),(9,'calibration','cal_examination','table','host_code','code'),(10,'reagent','name','table','reagent_name','reagent_name'),(11,'reagent','date_of_preparation','date','',''),(12,'reagent','date_of_expiry','date','',''),(13,'reagent','date_of_receipt','date','',''),(14,'reagent_use','date_of_opening','date','',''),(15,'reagent','unit','table','unit_name','unit_name'),(16,'Nonconformity','Process_affected','table','Process_affected','Process_affected'),(17,'Nonconformity','Extent','table','Extent','Extent'),(18,'Nonconformity','source','table','nc_source','source'),(19,'Nonconformity','Quality_manual_section','table','Quality_manual_section','clause'),(20,'Nonconformity','Immediate_control','textarea','',''),(21,'Performance_characteristics','Performance_characteristics','table','Performance_characteristics_list','Performance_specification'),(22,'Nonconformity','NC_Name','textarea','',''),(23,'Nonconformity','RCA','textarea','',''),(24,'Nonconformity','Corrective_and_preventive_actions','textarea','',''),(25,'scope','nabl_accreditation_status','table','nabl_accreditation_status','nabl_accreditation_status'),(26,'scope','instruction_for_preparation_of_the_patient','textarea','',''),(27,'scope','instructions_for_patient_collected_samples','textarea','',''),(28,'scope','unit_of_measurement','table','unit_of_measurement','unit_of_measurement'),(29,'scope','container_additives','table','container_additives','container_additives'),(30,'scope','sample_type','table','sample_type','sample_type'),(31,'scope','examination_is_currently_available','table','examination_is_currently_available','examination_is_currently_available'),(32,'NABL_Records','doc_type','table','Quality_manual_section','clause'),(33,'reagent_date_of_completion','date_of_completion','date','',''),(34,'reagent_use','date_of_closing','date','',''),(35,'HIB_Vaccination','Name','table','Name','Name'),(36,'HIB_Vaccination','First_Dose','date','',''),(37,'HIB_Vaccination','Second_Dose','date','',''),(38,'HIB_Vaccination','Third_Dose','date','',''),(40,'IQC','Description','table','Description','Description'),(41,'IQC','parameter','table','parameter','parameter'),(42,'Refrigerator_Temp','date_of_reading','date','',''),(43,'Refrigerator_Temp','time_of_reading','time','',''),(44,'Sample_Transporter','name','table','Sample_Transporter_name','name'),(45,'Sample_Transporter','date','date','',''),(46,'Sample_Transporter','time','time','',''),(49,'Name','varchar','varchar','varchar','varchar'),(50,'Miscellaneous','Name','table','Name','Name'),(51,'Internal_audit','Name_of_Discipline','table','Name_of_Discipline','Name_of_Discipline'),(53,'Internal_audit','Quality_manual_section','table','Quality_manual_section','clause'),(54,'Internal_audit','Detail_of_Non_conformity','textarea','',''),(55,'Internal_audit','Corrective_action_taken','textarea','','');
+INSERT INTO `table_field_specification` VALUES
+(1,'equipment_record','equipment','table','equipment','equipment',''),
+(2,'equipment_record','equipment_record_type','table','equipment_record_type','equipment_record_type',NULL),
+(3,'equipment_record','date','date','','',NULL),
+(4,'equipment_record','description','textarea','','',NULL),
+(5,'calibration','date','date','','',NULL),
+(6,'calibration','cal_equipment','table','cal_equipment','cal_equipment',NULL),
+(7,'calibration','remarks','textarea','','',NULL),
+(8,'calibration','correlation','textarea','','',NULL),
+(9,'calibration','cal_examination','table','host_code','code',NULL),
+(10,'reagent_receipt','reagent_name_id','dtable','reagent_name','id','id,reagent_name'),
+(11,'reagent_receipt','date_of_preparation','date','','',''),
+(12,'reagent_receipt','date_of_expiry','date','','',''),
+(13,'reagent_receipt','date_of_receipt','date','','',''),
+(14,'reagent_use','date_of_opening','date','','',''),
+(15,'reagent_receipt','unit','table','unit_name','unit_name',''),
+(16,'Nonconformity','Process_affected','table','Process_affected','Process_affected',''),
+(17,'Nonconformity','Extent','table','Extent','Extent',''),
+(18,'Nonconformity','source','table','nc_source','source',''),
+(19,'Nonconformity','Quality_manual_section','table','Quality_manual_section','clause',''),
+(20,'Nonconformity','Immediate_control','textarea','','',''),
+(21,'Performance_characteristics','Performance_characteristics','table','Performance_characteristics_list','Performance_specification',''),
+(22,'Nonconformity','NC_Name','textarea','','',''),
+(23,'Nonconformity','RCA','textarea','','',''),
+(24,'Nonconformity','Corrective_and_preventive_actions','textarea','','',''),
+(25,'scope','nabl_accreditation_status','table','nabl_accreditation_status','nabl_accreditation_status',''),
+(26,'scope','instruction_for_preparation_of_the_patient','textarea','','',''),
+(27,'scope','instructions_for_patient_collected_samples','textarea','','',''),
+(28,'scope','unit_of_measurement','table','unit_of_measurement','unit_of_measurement',''),
+(29,'scope','container_additives','table','container_additives','container_additives',''),
+(30,'scope','sample_type','table','sample_type','sample_type',''),
+(31,'scope','examination_is_currently_available','table','examination_is_currently_available','examination_is_currently_available',''),
+(32,'NABL_Records','doc_type','table','Quality_manual_section','clause',''),
+(33,'reagent_date_of_completion','date_of_completion','date','','',''),
+(34,'reagent_use','date_of_closing','date','','',''),
+(35,'HIB_Vaccination','Name','table','Name','Name',''),
+(36,'HIB_Vaccination','First_Dose','date','','',''),
+(37,'HIB_Vaccination','Second_Dose','date','','',''),
+(38,'HIB_Vaccination','Third_Dose','date','','',''),
+(40,'IQC','Description','table','Description','Description',''),
+(41,'IQC','parameter','table','parameter','parameter',''),
+(42,'Refrigerator_Temp','date_of_reading','date','','',''),
+(43,'Refrigerator_Temp','time_of_reading','time','','',''),
+(44,'Sample_Transporter','name','table','Sample_Transporter_name','name',''),
+(45,'Sample_Transporter','date','date','','',''),
+(46,'Sample_Transporter','time','time','','',''),
+(47,'documents','Personal_Records','table','Personal_Records','Personal_Records',NULL),
+(48,'remarks','Personal_Records','table','Personal_Records','Personal_Records',''),
+(49,'Name','varchar','varchar','varchar','varchar',''),
+(50,'Personal_Records','Name','table','Name','Name',''),
+(51,'reagent_use','reagent_receipt_id','dtable','reagent_receipt','id','reagent_name_id,lot,date_of_preparation');
 /*!40000 ALTER TABLE `table_field_specification` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -107,4 +167,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2023-10-31  0:45:49
+-- Dump completed on 2023-11-01  0:13:56

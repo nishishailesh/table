@@ -16,7 +16,7 @@ echo '<div class="two_column_one_by_two">';
         list_available_tables($link);
     echo '</div><div>';
         manage_stf($link,$_POST,$show_crud='yes',$extra=array(),$order_by=' order by  id desc ');
-        echo '<div id=element_for_child>Child Data</div>';
+        echo '<div id=element_for_child></div>';
     echo '</div>';
 echo '</div>';
 
@@ -24,7 +24,7 @@ echo '</div>';
 //////////////user code ends////////////////
 tail();
 
-//echo '<pre>';print_r($_POST);print_r($_FILES);echo '</pre>';
+echo '<pre>';print_r($_POST);print_r($_FILES);echo '</pre>';
 //////////////Functions///////////////////////
 
 ?>

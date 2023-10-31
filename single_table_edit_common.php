@@ -56,6 +56,8 @@ function display_child_buttons_with_ajax($link,$master_table,$master_key,$master
     }
 }
 
+
+//master key is id
 function display_child_buttons($link,$master_table,$master_key,$master_value)
 {
     $sql='select * from master_child where 
@@ -65,20 +67,42 @@ function display_child_buttons($link,$master_table,$master_key,$master_value)
     while($ar=get_single_row($result))
     {
         echo '<div class="d-inline-block" >
-            <form method=post class=print_hide target=_blank action=display_child.php>
-                <button type=submit class="btn btn-outline-primary btn-sm" name=action value=child >
-                '.$ar['child'].'
-                </button>
+            <!-- <form method=post class=print_hide target=_blank action=display_child.php> -->
+            <form method=post class=print_hide target=_blank>
+                <button type=submit class="btn btn-outline-primary btn-sm" name=action value=child >'.$ar['child'].'</button>
                 <input type=hidden name=session_name value=\''.$_POST['session_name'].'\'>
                 <input type=hidden name=fname value=\''.$ar['child_key'].'\'>
                 <input type=hidden name=fvalue value=\''.$master_value.'\'>
                 <input type=hidden name=tname value=\''.$ar['child'].'\'>
                 <input type=hidden name=mname value=\''.$master_table.'\'>
+                <input type=hidden name=master_field value=\''.$ar['master_key'].'\'>
             </form>
         </div>';
     }
 }
 //&#8595; is code for down arrow
+
+
+
+function display_child_data($link)
+{
+    $msql='select id from `'.$_POST['mname'].'` 
+            where `'.$_POST['master_field'].'`  =\''.$_POST['fvalue'].'\' order by id desc';
+
+    echo '<h2 class="text-success">'.$_POST['mname'].' with  id ='.$_POST['fvalue'].'</h2>';
+    //select_sql($link,$_POST['mname'],$msql,array(),$edit='no',$delete='no');
+    select_sql($link,$_POST['mname'],$msql,array(),$edit='no',$delete='no');
+           
+            
+    $sql='select id from `'.$_POST['tname'].'` 
+            where `'.$_POST['fname'].'`=\''.$_POST['fvalue'].'\' order by id desc';
+            
+    //echo $sql;
+    echo '<h2 class="text-success">'.$_POST['tname'].' with '.$_POST['fname'].'='.$_POST['fvalue'].'</h2>';
+    //select_sql($link,$_POST['tname'],$sql,array(),$edit='no',$delete='no');
+    select_sql($link,$_POST['tname'],$sql);
+}
+
 
 function add($link,$tname)
 {
@@ -110,7 +134,7 @@ function view_row($link,$tname,$pk,$header='no',$extra_button=array(),$edit='',$
         {
             echo '<td>'.$k.'</td>';
         }
-        echo '<td><img src=img/mc.png width=25></td>';
+       // echo '<td><img src=img/mc.png width=25></td>';
         echo '</tr>';
     }
     echo '<tr>';
@@ -136,7 +160,7 @@ function view_row($link,$tname,$pk,$header='no',$extra_button=array(),$edit='',$
                                 $action=$eb['action']
                                 );
                 }
-                
+            display_child_buttons($link,$tname,'id',$pk);    
             echo '<span class="round round-0 bg-warning" >'.$v.'</span></td>';
         }
         elseif(substr(get_field_type($link,$tname,$k),-4)=='blob')
@@ -164,7 +188,8 @@ function view_row($link,$tname,$pk,$header='no',$extra_button=array(),$edit='',$
                     {
                         //mk_select_from_sql_with_description($link,$sql,
                         //  $fspec['field'],$fspec['fname'],$fspec['fname'],'',$v,$blank='yes');
-                        echo '<pre>'.$ar['description'].'('.htmlentities($v).')</pre>';
+                        //echo '<pre>'.$ar['description'].'('.htmlentities($v).')</pre>';
+                        echo '<pre>'.$ar['description'].'</pre>';
                     }
                     else
                     {
@@ -180,15 +205,18 @@ function view_row($link,$tname,$pk,$header='no',$extra_button=array(),$edit='',$
             {
                 echo '<pre>'.htmlentities($v).'</pre>';
             }
+              display_child_buttons($link,$tname,$k,$v);    
+          
+            echo '</td>';
         }
-        echo '</td>';
+        
 
         
     }
 
-    echo '<td>';
-        display_child_buttons($link,$tname,'id',$pk);
-    echo '</td>';
+    //echo '<td>';
+     //   display_child_buttons($link,$tname,'id',$pk);
+    //echo '</td>';
     
     echo '</tr>';
 }
@@ -1151,6 +1179,11 @@ function manage_stf($link,$post,$show_crud='yes',$extra=array(),$order_by='order
     {
         insert_direct_with_default($link,$tname,$post);
     }
+    
+    elseif($post['action']=='child')
+    {
+        display_child_data($link);
+    }
 }
 
 function insert_direct_with_default($link,$tname,$post,$default=array())
@@ -1256,11 +1289,11 @@ function mk_select_from_array_with_description($name, $select_array,$disabled=''
         //print_r($value);
         if($value[0]==$default)
         {
-            echo '<option  selected value=\''.$value[0].'\' > '.$value[1].'('.$value[0].')'.' </option>';
+            echo '<option  selected value=\''.$value[0].'\' > '.$value[1].' </option>';
         }
         else
         {
-            echo '<option value=\''.$value[0].'\' > '.$value[1].'('.$value[0].')'.' </option>';
+            echo '<option value=\''.$value[0].'\' > '.$value[1].' </option>';
         }
     }
     echo '</select>';   
