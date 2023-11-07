@@ -1177,7 +1177,10 @@ function manage_stf($link,$post,$show_crud='yes',$extra=array(),$order_by='order
 
     elseif($post['action']=='save_insert')
     {
-        insert_direct_with_default($link,$tname,$post);
+        $id=insert_direct_with_default($link,$tname,$post);
+         echo '<table class="table table-striped table-sm table-bordered">';
+            view_row($link,$post['tname'],$id,'yes',$extra);
+        echo '</table>';       
     }
     
     elseif($post['action']=='child')
@@ -1205,15 +1208,24 @@ function insert_direct_with_default($link,$tname,$post,$default=array())
     $sql3=$sql3.'now(),\''.$_SESSION['login'].'\'';
     //echo $sql1.$sql2.')'.$sql3.')';
     $sql= $sql1.$sql2.')'.$sql3.')';
+    //echo $sql;
     if($result=run_query($link,$GLOBALS['database'],$sql))
     {
-        //echo 'inserted a record with id: '.last_autoincrement_insert($link);
+        $id=last_autoincrement_insert($link);
+        foreach($_FILES as $k=>$v)
+        {
+            if(!in_array($k,array('action','tname','session_name','id','recording_time','recorded_by')))
+            {
+                update_one_field_blob($link,$tname,$k,$k.'_name',$id);
+            }
+        } 
+        return $id;       //echo 'inserted a record with id: '.last_autoincrement_insert($link);
     }
     else
     {
         echo 'Record not inserted';
+        return false;
     }
-    
 }
 
 function mk_select_from_sql($link,$sql,$field_name,$select_name,$select_id,$disabled='',$default='',$blank='no')
